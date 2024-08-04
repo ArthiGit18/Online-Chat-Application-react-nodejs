@@ -181,13 +181,15 @@ const Container = styled.div`
     .sended {
       justify-content: flex-end;
       .content {
-        background-color: #4f04ff21;
+      color:black;
+      background: linear-gradient(5.2deg, rgb(191, 241, 236) 0.9%, rgb(109, 192, 236) 95.5%);
       }
     }
     .recieved {
       justify-content: flex-start;
       .content {
-        background-color: #9900ff20;
+      color:black;
+      background: linear-gradient(179.2deg, rgb(21, 21, 212) 0.9%, rgb(53, 220, 243) 95.5%);
       }
     }
   }

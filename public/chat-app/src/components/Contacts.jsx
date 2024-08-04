@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Logo from "../assets/logo-spychat.png";
+import Logo from "../assets/robot spy-chat.png";
 
 export default function Contacts({ contacts, changeChat }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
@@ -72,13 +72,13 @@ const Container = styled.div`
   display: grid;
   grid-template-rows: 10% 75% 15%;
   overflow: hidden;
-  background-color: #080420;
+  background: linear-gradient(109.5deg, rgb(13, 11, 136) 9.4%, rgb(86, 255, 248) 78.4%);
   .brand {
     display: flex;
     align-items: center;
     justify-content: center;
     img {
-      height: 7rem;
+      height: 4rem;
     }
     h3 {
       color: white;
@@ -122,12 +122,12 @@ const Container = styled.div`
       }
     }
     .selected {
-      background-color: #9a86f3;
+    background: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
     }
   }
 
   .current-user {
-    background-color: #0d0d30;
+  background: linear-gradient(138deg, rgb(32, 201, 255) 36.7%, rgb(0, 8, 187) 84.4%, rgb(255, 255, 255) 119.7%);
     display: flex;
     justify-content: center;
     align-items: center;
