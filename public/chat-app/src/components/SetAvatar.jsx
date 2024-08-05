@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { Buffer } from "buffer";
-import loader from "../assets/loader.gif";
+import loader from "../assets/Fidget-spinner.gif";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -52,17 +52,20 @@ export default function SetAvatar() {
     }
   };
 
-  useEffect(async () => {
-    const data = [];
-    for (let i = 0; i < 4; i++) {
-      const image = await axios.get(
-        `${api}/${Math.round(Math.random() * 1000)}`
-      );
-      const buffer = new Buffer(image.data);
-      data.push(buffer.toString("base64"));
-    }
-    setAvatars(data);
-    setIsLoading(false);
+  useEffect(() => {
+    const fetchAvatars = async () => {
+      const data = [];
+      for (let i = 0; i < 4; i++) {
+        const image = await axios.get(`${api}/${Math.round(Math.random() * 1000)}`);
+        console.log(image.data); // Check if image data is correct
+        const buffer = Buffer.from(image.data);
+        data.push(buffer.toString("base64"));
+      }
+      setAvatars(data);
+      setIsLoading(false);
+    };
+  
+    fetchAvatars();
   }, []);
   return (
     <>
@@ -109,7 +112,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   gap: 3rem;
-  background-color: #131324;
+  background: linear-gradient(138deg, rgb(32, 201, 255) 36.7%, rgb(0, 8, 187) 84.4%, rgb(255, 255, 255) 119.7%);
   height: 100vh;
   width: 100vw;
 
@@ -144,7 +147,7 @@ const Container = styled.div`
     }
   }
   .submit-btn {
-    background-color: #4e0eff;
+    background: radial-gradient(circle at 74.2% 50.9%, rgb(14, 72, 222) 5.2%, rgb(3, 22, 65) 75.3%);
     color: white;
     padding: 1rem 2rem;
     border: none;
