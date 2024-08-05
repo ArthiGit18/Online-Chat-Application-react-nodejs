@@ -13,7 +13,7 @@ export default function ChatContainer({ currentChat, socket }) {
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const data = await JSON.parse(
+      const data = JSON.parse(
         localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
       );
       const response = await axios.post(recieveMessageRoute, {
@@ -22,11 +22,9 @@ export default function ChatContainer({ currentChat, socket }) {
       });
       setMessages(response.data);
     };
-  
-    fetchMessages();
-  }, [currentChat]);
 
-  console.log("currentchat", currentChat)
+    fetchMessages();
+  }, [currentChat]); // Removed `recieveMessageRoute` from dependency array
 
   useEffect(() => {
     const getCurrentChat = async () => {
@@ -40,7 +38,7 @@ export default function ChatContainer({ currentChat, socket }) {
   }, [currentChat]);
 
   const handleSendMsg = async (msg) => {
-    const data = await JSON.parse(
+    const data = JSON.parse(
       localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
     );
     socket.current.emit("send-msg", {
@@ -60,23 +58,23 @@ export default function ChatContainer({ currentChat, socket }) {
   };
 
   useEffect(() => {
-    if (socket.current) {
-      socket.current.on("msg-recieve", (msg) => {
+    const currentSocket = socket.current; // Copy the ref to a variable
+    if (currentSocket) {
+      currentSocket.on("msg-recieve", (msg) => {
         setArrivalMessage({ fromSelf: false, message: msg });
       });
 
       return () => {
-        socket.current.off("msg-recieve");
+        currentSocket.off("msg-recieve"); // Use the copied variable
       };
     }
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     if (arrivalMessage) {
       setMessages((prev) => [...prev, arrivalMessage]);
     }
   }, [arrivalMessage]);
-  
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -181,15 +179,15 @@ const Container = styled.div`
     .sended {
       justify-content: flex-end;
       .content {
-      color:black;
-      background: linear-gradient(5.2deg, rgb(191, 241, 236) 0.9%, rgb(109, 192, 236) 95.5%);
+        color: black;
+        background: linear-gradient(5.2deg, rgb(191, 241, 236) 0.9%, rgb(109, 192, 236) 95.5%);
       }
     }
     .recieved {
       justify-content: flex-start;
       .content {
-      color:black;
-      background: linear-gradient(179.2deg, rgb(21, 21, 212) 0.9%, rgb(53, 220, 243) 95.5%);
+        color: black;
+        background: linear-gradient(179.2deg, rgb(21, 21, 212) 0.9%, rgb(53, 220, 243) 95.5%);
       }
     }
   }

@@ -14,81 +14,54 @@ export default function Chat() {
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
-  // useEffect(async () => {
-  //   if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-  //     navigate("/login");
-  //   } else {
-  //     setCurrentUser(
-  //       await JSON.parse(
-  //         localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-  //       )
-  //     );
-  //   }
-  // }, []);
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     socket.current = io(host);
-  //     socket.current.emit("add-user", currentUser._id);
-  //   }
-  // }, [currentUser]);
-
-  // useEffect(async () => {
-  //   if (currentUser) {
-  //     if (currentUser.isAvatarImageSet) {
-  //       const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
-  //       setContacts(data.data);
-  //     } else {
-  //       navigate("/setAvatar");
-  //     }
-  //   }
-  // }, [currentUser]);
 
   useEffect(() => {
-  const fetchCurrentUser = async () => {
-    if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      navigate("/login");
-    } else {
-      setCurrentUser(
-        await JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-        )
-      );
-    }
-  };
-
-  fetchCurrentUser();
-}, [navigate]);
-
-useEffect(() => {
-  if (currentUser) {
-    socket.current = io(host);
-    socket.current.emit("add-user", currentUser._id);
-
-    // Cleanup function
-    return () => {
-      socket.current.disconnect();
-    };
-  }
-}, [currentUser]);
-
-useEffect(() => {
-  const fetchContacts = async () => {
-    if (currentUser) {
-      if (currentUser.isAvatarImageSet) {
-        const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
-        setContacts(data.data);
+    const fetchCurrentUser = async () => {
+      if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+        navigate("/login");
       } else {
-        navigate("/setAvatar");
+        setCurrentUser(
+          await JSON.parse(
+            localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+          )
+        );
       }
-    }
-  };
+    };
 
-  fetchContacts();
-}, [currentUser]);
+    fetchCurrentUser();
+  }, [navigate]); // Added navigate to dependency array
+
+  useEffect(() => {
+    if (currentUser) {
+      socket.current = io(host);
+      socket.current.emit("add-user", currentUser._id);
+
+      // Cleanup function
+      return () => {
+        socket.current.disconnect();
+      };
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      if (currentUser) {
+        if (currentUser.isAvatarImageSet) {
+          const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+          setContacts(data.data);
+        } else {
+          navigate("/setAvatar");
+        }
+      }
+    };
+
+    fetchContacts();
+  }, [currentUser, navigate]); // Added navigate to dependency array
 
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };
+
   return (
     <>
       <Container>
